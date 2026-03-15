@@ -1,0 +1,56 @@
+[
+  {
+    "question": "What is your full name?",
+    "type": "short_text",
+    "type_code": 0,
+    "entry_id": "entry.1234567890",
+    "options": null,
+    "scale_min": null,
+    "scale_max": null
+  },
+  {
+    "question": "Tell us about yourself",
+    "type": "paragraph",
+    "type_code": 1,
+    "entry_id": "entry.2345678901",
+    "options": null,
+    "scale_min": null,
+    "scale_max": null
+  },
+  {
+    "question": "What is your age group?",
+    "type": "radio",
+    "type_code": 2,
+    "entry_id": "entry.3456789012",
+    "options": ["Under 18", "18-24", "25-34", "35-44", "45-54", "55+"],
+    "scale_min": null,
+    "scale_max": null
+  },
+  {
+    "question": "What is your highest education level?",
+    "type": "dropdown",
+    "type_code": 3,
+    "entry_id": "entry.4567890123",
+    "options": ["High School", "Bachelor's Degree", "Master's Degree", "PhD", "Other"],
+    "scale_min": null,
+    "scale_max": null
+  },
+  {
+    "question": "Which programming languages do you use?",
+    "type": "checkbox",
+    "type_code": 4,
+    "entry_id": "entry.5678901234",
+    "options": ["Python", "JavaScript", "Java", "C++", "Go", "Rust", "TypeScript"],
+    "scale_min": null,
+    "scale_max": null
+  },
+  {
+    "question": "How satisfied are you with this survey?",
+    "type": "linear_scale",
+    "type_code": 5,
+    "entry_id": "entry.6789012345",
+    "options": ["1", "2", "3", "4", "5"],
+    "scale_min": 1,
+    "scale_max": 5
+  }
+]
