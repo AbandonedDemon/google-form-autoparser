@@ -7,6 +7,33 @@ import requests
 from formbot.config import QUESTION_TYPES, USER_AGENT, REQUEST_TIMEOUT
 
 
+def normalize_url(url: str) -> str:
+    """Resolve any Google Form URL variant to the canonical /d/e/.../viewform URL."""
+    url = url.strip()
+
+    # Short links (forms.gle/...) and editor URLs (/d/EDITOR_ID/edit) redirect
+    # to the canonical format, so follow the redirect chain.
+    is_short_link = "forms.gle/" in url
+    is_editor_url = "/forms/d/" in url and "/forms/d/e/" not in url
+    if is_short_link or is_editor_url:
+        headers = {"User-Agent": USER_AGENT}
+        resp = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT, allow_redirects=True)
+        if resp.status_code != 200:
+            raise ValueError(f"Failed to resolve URL: HTTP {resp.status_code}")
+        url = resp.url
+
+    # Strip query params and fragments
+    url = re.split(r"[?#]", url)[0]
+
+    # Ensure URL ends with /viewform
+    if url.endswith("/"):
+        url = url.rstrip("/")
+    if not url.endswith("/viewform"):
+        url += "/viewform"
+
+    return url
+
+
 def fetch_form_html(url: str) -> str:
     headers = {"User-Agent": USER_AGENT}
     resp = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
@@ -73,13 +100,14 @@ def parse_questions(fb_data: list) -> list[dict]:
 
 
 def get_form_id(url: str) -> str:
-    match = re.search(r"/d/e/([^/]+)", url)
+    match = re.search(r"/d/e/([^/?\#]+)", url)
     if not match:
         raise ValueError(f"Could not extract form ID from URL: {url}")
     return match.group(1)
 
 
 def parse_form(url: str) -> tuple[str, list[dict]]:
+    url = normalize_url(url)
     form_id = get_form_id(url)
     html = fetch_form_html(url)
     fb_data = extract_fb_data(html)
