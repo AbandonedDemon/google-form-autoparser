@@ -14,7 +14,7 @@ A lightweight Python tool to parse public Google Forms and submit automated resp
 ## Setup
 
 ```bash
-pip install -r formbot/requirements.txt
+pip install -r requirements.txt
 ```
 
 ## CLI Usage
@@ -44,13 +44,20 @@ python -m formbot.main --url "https://docs.google.com/forms/d/e/FORM_ID/viewform
 ## Streamlit UI
 
 ```bash
-streamlit run ui/streamlit_app.py
+streamlit run streamlit_app.py
 ```
 
 1. Enter a Google Form URL in the sidebar
 2. Click **Parse Form** to extract questions
 3. Click **Preview Sample** to see a generated response
 4. Click **Submit Responses** to start batch submission with live progress
+
+### Deploy on Streamlit Community Cloud
+
+1. Push this repo to GitHub
+2. Go to [share.streamlit.io](https://share.streamlit.io) and connect your repo
+3. Set the main file path to `streamlit_app.py`
+4. Deploy
 
 ## Testing Without a Form
 
@@ -72,19 +79,18 @@ for entry_id, value in generate_response(questions):
 ## Project Structure
 
 ```
-formbot/
-├── config.py          # Constants and type mapping
-├── parser.py          # Form HTML fetcher + question extractor
-├── generator.py       # Response generator (Faker + random)
-├── submitter.py       # POST submission engine with rate limiting
-├── main.py            # CLI entry point
-└── requirements.txt   # Dependencies
-
-ui/
-└── streamlit_app.py   # Streamlit web UI
-
-tests/
-└── example_form.json  # Sample form fixture for offline testing
+├── streamlit_app.py       # Streamlit entry point (for deployment)
+├── requirements.txt       # Dependencies
+│
+├── formbot/
+│   ├── config.py          # Constants and type mapping
+│   ├── parser.py          # Form HTML fetcher + question extractor
+│   ├── generator.py       # Response generator (Faker + random)
+│   ├── submitter.py       # POST submission engine with rate limiting
+│   └── main.py            # CLI entry point
+│
+└── tests/
+    └── example_form.json  # Sample form fixture for offline testing
 ```
 
 ## How It Works
@@ -98,6 +104,6 @@ tests/
 ## Limitations
 
 - Only works with **public** forms (no login required)
-- Does not support file upload or date/time question types
+- Does not support multiple choice grid, file upload, or date/time question types
 - Does not handle "Other" option fields
 - High volume submissions may trigger rate limiting from Google

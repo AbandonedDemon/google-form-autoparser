@@ -2,3 +2,7 @@ __pycache__/
 *.pyc
 .superpowers/
 .env
+venv/
+.venv/
+ui/
+docs/
